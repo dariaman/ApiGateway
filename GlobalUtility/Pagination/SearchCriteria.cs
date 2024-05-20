@@ -4,7 +4,7 @@
     {
         public string? PropertyName { get; set; } = string.Empty;
 
-        public string Operator { get; set; } = string.Empty;
+        public string? Operator { get; set; } = string.Empty;
 
         public string? Value { get; set; } = string.Empty;
         public string? StartValue { get; set; } = string.Empty;
