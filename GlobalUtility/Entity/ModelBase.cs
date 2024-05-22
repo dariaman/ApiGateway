@@ -11,6 +11,7 @@ namespace GlobalUtility.Entity
         public bool IsActive { get; set; } = true;
 
         public bool IsDelete { get; set; } = false;
+        public string? DeletedBy { get; set; }
         public DateTime? DeletedDate { get; set; }
 
 

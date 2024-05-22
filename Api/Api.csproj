@@ -14,10 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\User\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\UserModule\UserModule.csproj" />
   </ItemGroup>
 
