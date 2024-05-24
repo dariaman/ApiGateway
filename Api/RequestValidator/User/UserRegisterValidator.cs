@@ -7,12 +7,16 @@ namespace Api.RequestValidator.User
     {
         public UserRegisterValidator()
         {
-            CascadeMode = CascadeMode.Continue;
-            RuleFor(x => x.Email).NotNull().NotEmpty().WithMessage("Email gak boleh kosong");
-            RuleFor(x => x.Email).MinimumLength(10).WithMessage("panjang minimum Email");
+            //CascadeMode = CascadeMode.Continue;
+            RuleFor(x => x.Email)
+                .Cascade(CascadeMode.Continue)
+                .MinimumLength(10).WithMessage("panjang minimum Email")
+                .NotNull().NotEmpty().WithMessage("Email gak boleh kosong");
 
-            RuleFor(x => x.Fullname).MinimumLength(10).WithMessage("panjang minimum Fullname");
-            RuleFor(x => x.Fullname).NotNull().NotEmpty().WithMessage("User Fullname gak boleh kosong");
+            RuleFor(x => x.Fullname)
+                .Cascade(CascadeMode.Stop)
+                .MinimumLength(10).WithMessage("panjang minimum Fullname")
+                .NotNull().NotEmpty().WithMessage("User Fullname gak boleh kosong");
 
         }
     }

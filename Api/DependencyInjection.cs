@@ -10,7 +10,12 @@ namespace Api
     {
         public static IServiceCollection RegisterApiInjection(this IServiceCollection services)
         {
-            services.AddMvc(options => options.Filters.Add(typeof(FormatValidationAttribute)));
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(FormatValidationAttribute));
+                options.AllowEmptyInputInBodyModelBinding = true;
+            });
+
             services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
             services.AddFluentValidationAutoValidation();
