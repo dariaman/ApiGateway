@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Collections.Generic;
+using System.Text.Json;
 
 namespace Api.RequestValidator
 {
@@ -9,21 +11,26 @@ namespace Api.RequestValidator
         {
             if (!context.ModelState.IsValid)
             {
-                var errors = context.ModelState.Values.Where(v => v.Errors.Count > 0)
-                        .SelectMany(v => v.Errors)
-                        .Select(v => v.ErrorMessage)
+                var errorState = context.ModelState
                         .ToList();
+
+                Dictionary<string, List<string>> errorMessage = [];
+
+                foreach (var modelState in errorState)
+                {
+                    errorMessage.Add(modelState.Key, modelState.Value.Errors.Select(x => x.ErrorMessage).ToList());
+                }
 
                 var responseObj = new
                 {
                     Code = 123456,
-                    Message = "test.",
-                    Errors = errors
+                    Message = "test message",
+                    Errors = errorMessage
                 };
 
                 context.Result = new JsonResult(responseObj)
                 {
-                    StatusCode = 200
+                    StatusCode = 400
                 };
             }
         }
