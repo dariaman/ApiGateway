@@ -1,3 +1,6 @@
+using Api;
+using Api.RequestValidator;
+using GlobalUtility;
 using UserModule;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +12,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Depedency Injection
 builder.Services.RegisterDIEntity();
+builder.Services.RegisterDIGlobalUtility();
+builder.Services.RegisterApiInjection();
+
+// 
+builder.Services.AddMvc(options =>
+{
+    options.Filters.Add(typeof(FormatValidationAttribute));
+});
 
 var app = builder.Build();
 
