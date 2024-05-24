@@ -21,6 +21,7 @@ builder.Services.RegisterApiInjection();
 builder.Services.AddMvc(options =>
 {
     options.Filters.Add(typeof(FormatValidationAttribute));
+    options.AllowEmptyInputInBodyModelBinding = true;
 });
 
 var app = builder.Build();
