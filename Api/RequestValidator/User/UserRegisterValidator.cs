@@ -14,7 +14,7 @@ namespace Api.RequestValidator.User
                 .NotNull().NotEmpty().WithMessage("Email gak boleh kosong");
 
             RuleFor(x => x.Fullname)
-                .Cascade(CascadeMode.Stop)
+                .Cascade(CascadeMode.StopOnFirstFailure)
                 .MinimumLength(10).WithMessage("panjang minimum Fullname")
                 .NotNull().NotEmpty().WithMessage("User Fullname gak boleh kosong");
 
