@@ -8,7 +8,7 @@ namespace Api
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection RegisterApiInjection(this IServiceCollection services)
+        public static IServiceCollection ApiDI(this IServiceCollection services)
         {
             services.AddMvc(options =>
             {
