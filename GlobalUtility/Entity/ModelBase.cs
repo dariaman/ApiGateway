@@ -7,7 +7,7 @@ namespace GlobalUtility.Entity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Int64 Id { get; set; }
         public bool IsActive { get; set; } = true;
 
         public bool IsDelete { get; set; } = false;

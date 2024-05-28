@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Api.RequestValidator
+namespace Api.Attribute
 {
     public class FormatValidationAttribute : ActionFilterAttribute
     {

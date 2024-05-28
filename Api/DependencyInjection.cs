@@ -1,4 +1,4 @@
-﻿using Api.RequestValidator;
+﻿using Api.Attribute;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
