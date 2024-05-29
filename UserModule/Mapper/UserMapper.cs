@@ -1,7 +1,7 @@
-﻿using Api.Request;
-using UserModule.Model;
+﻿using UserModule.Model;
+using UserModule.Request;
 
-namespace Api.Mapper
+namespace UserModule.Mapper
 {
     public static class UserMapper
     {

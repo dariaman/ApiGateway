@@ -8,7 +8,7 @@ namespace GlobalUtility.Interface
         where TDatabase : DbContext
     {
         // CRUD
-        Task<TModel> AddAsync(TModel Tmodel);
+        Task<TModel> InsertAsync(TModel Tmodel);
         Task<TModel> UpdateAsync(TModel Tmodel);
         Task<TModel> DeleteAsync(TModel Tmodel);
 

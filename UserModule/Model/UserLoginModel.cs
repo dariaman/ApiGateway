@@ -8,7 +8,7 @@ namespace UserModule.Model
     public class UserLoginModel : ModelBase
     {
         [Required]
-        public Int64 UserId { get; set; }
+        public Int64 UserProfileId { get; set; }
         
         [Required]
         public string Username { get; set; }

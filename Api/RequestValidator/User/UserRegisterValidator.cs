@@ -1,5 +1,5 @@
-﻿using Api.Request;
-using FluentValidation;
+﻿using FluentValidation;
+using UserModule.Request;
 
 namespace Api.RequestValidator.User
 {

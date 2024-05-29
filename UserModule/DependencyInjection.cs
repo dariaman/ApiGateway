@@ -15,6 +15,7 @@ namespace UserModule
             services.AddDbContext<UserDB>(options => options.UseSqlServer(config.GetSection("Database:UserDB").Value));
 
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+            services.AddScoped<IUserLoginRepository, UserLoginRepository>();
             services.AddScoped<IUserService, UserService>();
 
             return services;

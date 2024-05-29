@@ -10,7 +10,7 @@ namespace GlobalUtility.Entity
         public readonly TDatabase _tDB = tDB;
 
         // CRUD
-        public async Task<TModel> AddAsync(TModel Tmodel)
+        public async Task<TModel> InsertAsync(TModel Tmodel)
         {
             Tmodel.CreateBy = "Not Yet Set By Session";
 

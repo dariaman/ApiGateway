@@ -1,9 +1,10 @@
 ﻿using UserModule.Model;
+using UserModule.Request;
 
 namespace UserModule.Interface
 {
     public interface IUserService
     {
-        Task<UserProfileModel> RegisterUserAsync(UserProfileModel userRegisterParam);
+        Task<UserProfileModel> RegisterUserAsync(UserRegisterReq userRegisterParam);
     }
 }
