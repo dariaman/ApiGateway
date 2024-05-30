@@ -1,7 +1,8 @@
 using Api;
+using Api.Middleware;
 using GlobalUtility;
 using GlobalUtility.Configuration;
-using GlobalUtility.Middleware;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -19,8 +20,10 @@ IConfiguration _config = new ConfigurationBuilder()
     .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
     .Build();
 
-builder.Services.AddControllers()
-    .AddJsonOptions(opt =>
+builder.Services.AddControllers(
+        // remove text/plain, jadi return selalu json
+        options => options.OutputFormatters.RemoveType<StringOutputFormatter>()
+    ).AddJsonOptions(opt =>
     {
         opt.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
         opt.JsonSerializerOptions.AllowTrailingCommas = true;
@@ -34,12 +37,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // mapper configuration
-//builder.Configuration.GetSection("JwtSetting").Get<JwtSetting>();
-//builder.Services.Configure<JwtSetting>(builder.Configuration.GetSection("JwtSetting"));
 builder.Services.Configure<JwtSetting>(_config.GetSection("JwtSetting"));
 
 // middleware 
-//builder.Services.AddTransient<JwtMidlleware>();
+builder.Services.AddScoped<JwtMiddleware>();
 
 // Depedency Injection
 builder.Services.UserModuleDI(_config);
@@ -49,9 +50,7 @@ builder.Services.ApiDI();
 var app = builder.Build();
 
 // Middleware
-app.UseMiddleware<JwtMidlleware>();
-
-
+app.UseMiddleware<JwtMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -1,7 +1,6 @@
-﻿using GlobalUtility.Configuration;
+﻿using GlobalUtility.Entity;
 using GlobalUtility.Interface;
 using GlobalUtility.Service;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GlobalUtility
@@ -10,7 +9,8 @@ namespace GlobalUtility
     {
         public static IServiceCollection GlobalUtilityDI(this IServiceCollection services)
         {
-            services.AddScoped<IJwtTokenService, JwtTokenService>();
+            services.AddTransient<IJwtTokenService, JwtTokenService>();
+            services.AddScoped<UserSession>();
 
             return services;
         }

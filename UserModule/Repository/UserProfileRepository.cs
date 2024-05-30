@@ -6,7 +6,8 @@ using UserModule.Model;
 
 namespace UserModule.Repository
 {
-    public class UserProfileRepository(UserDB userDBContext) : RepositoryBase<UserProfileModel, UserDB>(userDBContext), IUserProfileRepository
+    public class UserProfileRepository(UserDB userDBContext, UserSession userSession)
+        : RepositoryBase<UserProfileModel, UserDB>(userDBContext, userSession), IUserProfileRepository
     {
         public async Task<UserProfileModel?> FindByNameAsync(string name)
         {

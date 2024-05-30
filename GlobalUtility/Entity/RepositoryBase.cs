@@ -3,17 +3,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GlobalUtility.Entity
 {
-    public abstract class RepositoryBase<TModel, TDatabase>(TDatabase tDB) : IRepositoryBase<TModel, TDatabase>, IDisposable
+    public abstract class RepositoryBase<TModel, TDatabase>(TDatabase tDB, UserSession userSession) : IRepositoryBase<TModel, TDatabase>, IDisposable
         where TModel : ModelBase
         where TDatabase : DbContext
     {
         public readonly TDatabase _tDB = tDB;
+        public readonly UserSession _userSession = userSession;
 
         // CRUD
         public async Task<TModel> InsertAsync(TModel Tmodel)
         {
-            Tmodel.CreateBy = "Not Yet Set By Session";
-
+            Tmodel.CreateBy = _userSession.Username ?? throw new ApplicationException("Invalid user session");
             _tDB.Set<TModel>().Add(Tmodel);
             await _tDB.SaveChangesAsync();
             return Tmodel;
@@ -24,7 +24,7 @@ namespace GlobalUtility.Entity
             var existingTModel = await FindByIdAsync(Tmodel.Id) ?? throw new DbUpdateException("No Data Found For Updated");
 
             existingTModel.LastUpdateDate = DateTime.Now;
-            existingTModel.LastUpdateBy = "Not Yet Set By Session";
+            existingTModel.LastUpdateBy = _userSession.Username ?? throw new ApplicationException("Invalid user session");
 
             await _tDB.SaveChangesAsync();
             return existingTModel;
@@ -36,7 +36,7 @@ namespace GlobalUtility.Entity
 
             existingTModel.IsDelete = true;
             existingTModel.DeletedDate = DateTime.Now;
-            existingTModel.DeletedBy = "Not Yet Set By Session";
+            existingTModel.DeletedBy = _userSession.Username ?? throw new ApplicationException("Invalid user session");
 
             await _tDB.SaveChangesAsync();
 

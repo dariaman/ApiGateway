@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System.Security.Cryptography;
+﻿using GlobalUtility.Entity;
 using System.Transactions;
 using UserModule.Interface;
 using UserModule.Mapper;
@@ -8,11 +7,17 @@ using UserModule.Request;
 
 namespace UserModule.Service
 {
-    public class UserService(IUserProfileRepository userProfileRepository, IUserLoginRepository userLoginRepository) : IUserService
+    public class UserService(
+        IUserProfileRepository userProfileRepository,
+        IUserLoginRepository userLoginRepository,
+        //UserSession userSession,
+        IAuthService authService) : IUserService
     {
 
         public readonly IUserProfileRepository _userProfileRepository = userProfileRepository;
         public readonly IUserLoginRepository _userLoginRepository = userLoginRepository;
+        public readonly IAuthService _authService = authService;
+        //public UserSession _userSession = userSession;
 
         public async Task<UserProfileModel> RegisterUserAsync(UserRegisterReq userRegisterParam)
         {
@@ -28,11 +33,7 @@ namespace UserModule.Service
             {
                 newUserProfile = await _userProfileRepository.InsertAsync(userRegisterParam.MapToUserProfile());
 
-                byte[] salt = RandomNumberGenerator.GetBytes(128 / 8);
-
-                newUserLogin.PasswordHash = HashPassword(userRegisterParam.Password!, salt);
-                newUserLogin.Salt = Convert.ToBase64String(salt);
-                // byte[] salt = Convert.FromBase64String(string data)
+                (newUserLogin.PasswordHash, newUserLogin.Salt) = _authService.GenerateNewHashPassword(userRegisterParam.Password!);
                 newUserLogin.UserProfileId = newUserProfile.Id;
                 newUserLogin.Username = userRegisterParam.Username!;
 
@@ -45,15 +46,18 @@ namespace UserModule.Service
             return newUserProfile;
         }
 
-        public static string HashPassword(string passwordText, byte[] passwordSaltByte)
+        public async Task<UserSession> GetUserSessionAsync(Int64 userID)
         {
-            return Convert.ToBase64String(
-                    KeyDerivation.Pbkdf2(
-                        password: passwordText,
-                        salt: passwordSaltByte,
-                        prf: KeyDerivationPrf.HMACSHA256,
-                        iterationCount: 100000,
-                        numBytesRequested: 256 / 8));
+            UserProfileModel userProfile = await _userProfileRepository.FindByIdAsync(userID) ?? throw new ApplicationException("can not create user session");
+            UserLoginModel userLogin = await _userLoginRepository.FindByUserProfileIDAsync(userID) ?? throw new ApplicationException("can not create user session");
+
+            return new UserSession
+            {
+                UserID = userProfile.Id,
+                Username = userLogin.Username,
+                Fullname = userProfile.Fullname,
+                Email = userProfile.Email
+            };
         }
     }
 }

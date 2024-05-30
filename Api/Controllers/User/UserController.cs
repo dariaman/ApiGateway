@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using GlobalUtility.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UserModule.Interface;
 using UserModule.Request;
 
 namespace Api.Controllers.User
 {
-    public class UserController(IUserService userService) : MainController
+    public class UserController(IUserService userService, UserSession userSession) : MainController
     {
         public readonly IUserService _userService = userService;
+        public UserSession _userSession = userSession;
 
         [AllowAnonymous]
         [HttpPost("register")]
