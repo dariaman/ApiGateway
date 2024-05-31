@@ -1,5 +1,4 @@
-﻿using GlobalUtility.Entity;
-using GlobalUtility.Interface;
+﻿using GlobalUtility.Interface;
 using UserModule.Interface;
 
 namespace Api.Middleware
@@ -19,9 +18,9 @@ namespace Api.Middleware
                 int userId = _jwtTokenService.ValidateJwtToken(token);
                 if (userId > 0)
                 {
-                    var user = await _userService.GetUserSessionAsync(userId);
+                     await _userService.SetUserSessionAsync(userId);
 
-                    ////on successful jwt validation, set user session globally
+                    //on successful jwt validation, set user session globally
                     //var scope = app.ApplicationServices.CreateScope();
                     //var _usersession = scope.ServiceProvider.GetService<UserSession>();
 

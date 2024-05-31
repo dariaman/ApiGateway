@@ -10,14 +10,14 @@ namespace UserModule.Service
     public class UserService(
         IUserProfileRepository userProfileRepository,
         IUserLoginRepository userLoginRepository,
-        //UserSession userSession,
         IAuthService authService) : IUserService
     {
+
+        public UserSession _userSession { get; set; }
 
         public readonly IUserProfileRepository _userProfileRepository = userProfileRepository;
         public readonly IUserLoginRepository _userLoginRepository = userLoginRepository;
         public readonly IAuthService _authService = authService;
-        //public UserSession _userSession = userSession;
 
         public async Task<UserProfileModel> RegisterUserAsync(UserRegisterReq userRegisterParam)
         {
@@ -46,12 +46,12 @@ namespace UserModule.Service
             return newUserProfile;
         }
 
-        public async Task<UserSession> GetUserSessionAsync(Int64 userID)
+        public async Task SetUserSessionAsync(Int64 userID)
         {
             UserProfileModel userProfile = await _userProfileRepository.FindByIdAsync(userID) ?? throw new ApplicationException("can not create user session");
             UserLoginModel userLogin = await _userLoginRepository.FindByUserProfileIDAsync(userID) ?? throw new ApplicationException("can not create user session");
 
-            return new UserSession
+            _userSession = new UserSession
             {
                 UserID = userProfile.Id,
                 Username = userLogin.Username,

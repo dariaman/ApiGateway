@@ -1,6 +1,6 @@
 ﻿namespace GlobalUtility.Entity
 {
-    public record UserSession
+    public class UserSession
     {
         public Int64 UserID { get; set; }
         public string Username { get; set; }
